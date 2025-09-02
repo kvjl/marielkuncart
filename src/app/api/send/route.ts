@@ -1,15 +1,19 @@
-import { EmailTemplate } from "@/app/contact/page";
+import { EmailTemplate } from "@/app/components/EmailTemplate";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
+    // get the JSON body from the contact form
+    const body = await req.json();
+    const { firstName, email, message } = body;
+
     const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: ["delivered@resend.dev"],
-      subject: "Hello world",
-      react: EmailTemplate({ firstName: "John" }),
+      from: "Portfolio Contact <onboarding@resend.dev>", // must be a verified sender in Resend
+      to: ["youremail@example.com"], // change this to YOUR email
+      subject: `New message from ${firstName}`,
+      react: EmailTemplate({ firstName, message }), // use form data here
     });
 
     if (error) {
