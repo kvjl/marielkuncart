@@ -1,11 +1,42 @@
 // src/app/contact/page.tsx
-import * as React from "react";
+"use client";
+import { useState } from "react";
 
 export default function ContactPage() {
+  const [status, setStatus] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const data = {
+      firstName: (form.elements.namedItem("firstName") as HTMLInputElement)
+        .value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement)
+        .value,
+    };
+
+    setStatus("Sending...");
+
+    const res = await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      setStatus("Message sent!");
+      form.reset();
+    } else {
+      setStatus("Error sending message.");
+    }
+  }
+
   return (
     <div className="max-w-lg mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Contact</h1>
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
           name="firstName"
@@ -34,6 +65,7 @@ export default function ContactPage() {
           Send
         </button>
       </form>
+      {status && <p className="mt-4">{status}</p>}
     </div>
   );
 }
