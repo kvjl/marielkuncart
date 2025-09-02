@@ -3,7 +3,13 @@ interface EmailTemplateProps {
   message: string;
 }
 
-export function EmailTemplate({ firstName, message }: EmailTemplateProps) {
+export function EmailTemplate({
+  firstName,
+  message,
+}: {
+  firstName: string;
+  message: string;
+}) {
   return (
     <div>
       <h1>Message from {firstName}</h1>
