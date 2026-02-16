@@ -1,4 +1,4 @@
-# Mariel Kunc Art
+# Mariel KuncArt
 
 This is a small website I built to showcase my mom’s artwork. It’s a personal project meant to give her art a simple online home where visitors can browse her pieces in a clean layout.
 
